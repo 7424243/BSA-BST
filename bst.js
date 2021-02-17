@@ -248,3 +248,54 @@ function thirdLargestNode(t) {
     }
 }
 console.log(thirdLargestNode(BST))//output: 6
+
+/* ===== 8. Balanced BST =====
+Write an algorithm that checks if a BST is balanced (i.e., a tree where no 2 leaves differ in distance from the root by more than 1).
+*/
+function isBalanced(t) {
+    if(!t) {
+        return false
+    }
+    let rightHeight = findHeight(t.right)
+    let leftHeight = findHeight(t.left)
+    if((rightHeight - leftHeight > 1) || (leftHeight - rightHeight > 1)) {
+        return false
+    } else {
+        return true
+    }
+}
+console.log(isBalanced(BST))//output: false 
+
+/* ===== 9. Are they the same BSTs? =====
+You are given two arrays which represent two sequences of keys that are used to create two binary search trees. Write a program that will tell whether the two BSTs will be identical or not without actually constructing the tree. You may use another data structure such as an array or a linked list but don't construct the BST. What is the time complexity of your algorithm? E.g., 3, 5, 4, 6, 1, 0, 2 and 3, 1, 5, 2, 4, 6, 0 are two sequences of arrays but will create the exact same BSTs and your program should return true.
+*/
+function identicalBST(arr1, arr2) {
+    if(arr1[0] !== arr2[0] || arr1.length !== arr2.length) {
+        return false
+    }
+    if(arr1.length === 0 || arr2.length === 0) {
+        return true
+    }
+    let root1 = arr1[0]
+    let higher1 = []
+    let lower1 = []
+    for(let i = 1; i < arr1.length; i++) {
+        if(arr1[i] > root1) {
+            higher1.push(arr1[i])
+        } else {
+            lower1.push(arr1[i])
+        }
+    }
+    let root2 = arr2[0]
+    let higher2 = []
+    let lower2 = []
+    for(let k = 1; k < arr2.length; k++) {
+        if(arr2[k] > root2) {
+            higher2.push(arr2[k])
+        } else {
+            lower2.push(arr2[k])
+        }
+    }
+    return (identicalBST(higher1, higher2) && identicalBST(lower1, lower2))
+}
+console.log(identicalBST([3, 5, 4, 6, 1, 0, 2], [3, 1, 5, 2, 4, 6, 0]))//output: true. O(n)
